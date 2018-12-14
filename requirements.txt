@@ -1,0 +1,12 @@
+django
+gunicorn
+numpy
+matplotlib
+brewer2mpl
+pillow
+seaborn
+python 3.6
+openCV
+tensorflow
+django-heroku
+whitenoise
