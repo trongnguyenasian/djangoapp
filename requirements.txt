@@ -5,7 +5,7 @@ matplotlib
 brewer2mpl
 pillow
 seaborn
-opencv
+opencv-python
 tensorflow
 django-heroku
 whitenoise
