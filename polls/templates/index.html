@@ -109,42 +109,9 @@
   <div class="container-fluid">
     <form class="" action="upload" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="row">
-        <div class="col-md-5">
-          <div class="form-group">
-            <h2>Chữ ký cần xác thực</h2>
-            <div class="input-group">
-              <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                  Browse… <input type="file" id="imgInp">
-                </span>
-              </span>
-              {{ form.test }}
-            </div>
-              <img class="img" id='img-upload'/>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-primary btn-lg xacminh">Xác Nhận</button>
-          <div class="jumbotron ketqua">
-            <h3 class="lead">This information.</h3>
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="form-group">
-            <h2>Chữ ký mẫu</h2>
-            <div class="input-group">
-              <span class="input-group-btn">
-                <span class="btn btn-default btn-file2">
-                  Browse… <input type="file" id="imgInp2">
-                </span>
-              </span>
-              {{form.training}}
-            </div>
-            <img class="img" id='img-upload2'/>
-          </div>
-        </div>
-      </div>
+      {{ form.test }}
+      {{ form.training }}
+      <button type="submit"> send</button>
     </form>
   </div>
 
@@ -154,125 +121,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready( function() {
-    	$(document).on('change', '.btn-file :file', function() {
-	      var input = $(this),
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-	      input.trigger('fileselect', [label]);
-      });
-
-		$('.btn-file :file').on('fileselect', function(event, label) {
-
-		    var input = $(this).parents('.input-group').find(':text'),
-		        log = label;
-
-		    if( input.length ) {
-		        input.val(log);
-		    } else {
-		        if( log ) alert(log);
-		    }
-
-		});
-		function readURL(input) {
-		    if (input.files && input.files[0]) {
-		        var reader = new FileReader();
-
-		        reader.onload = function (e) {
-		            $('#img-upload').attr('src', e.target.result);
-		        }
-
-		        reader.readAsDataURL(input.files[0]);
-		    }
-		}
-
-		$("#imgInp").change(function(){
-		    readURL(this);
-		});
-
-    $('.btn-file2 :file').on('fileselect', function(event, label) {
-
-        var input = $(this).parents('.input-group').find(':text'),
-            log = label;
-
-        if( input.length ) {
-            input.val(log);
-        } else {
-            if( log ) alert(log);
-        }
-
-    });
-    $(document).on('change', '.btn-file2 :file', function() {
-      var input = $(this),
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-      input.trigger('fileselect', [label]);
-    });
-    function readURL2(input) {
-		    if (input.files && input.files[0]) {
-		        var reader = new FileReader();
-
-		        reader.onload = function (e) {
-		            $('#img-upload2').attr('src', e.target.result);
-		        }
-
-		        reader.readAsDataURL(input.files[0]);
-		    }
-		}
-    $("#imgInp2").change(function(){
-		    readURL2(this);
-		});
-
-//AJAX
-
-    function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-  var csrftoken = getCookie('csrftoken');
-
-  function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-    function upload(event) {
-      event.preventDefault();
-      var data = new FormData($('form').get(0));
-
-      ($.ajax({
-        url: $(this).attr('action'),
-        type: $(this).attr('method'),
-        data: data,
-        cache: false,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            alert('success');
-        }
-      }));
-      return false;
-      }
-      $(function() {
-        $('form').submit(upload);
-      });
-	});
-  </script>
+    {% load static %}
+  <!-- <script src="{% static "image.js" %}"></script>
+  <script src="{% static "ajax.js" %}"></script> -->
 </body>
 </html>
