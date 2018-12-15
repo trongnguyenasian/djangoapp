@@ -9,3 +9,4 @@ opencv-python
 tensorflow
 django-heroku
 whitenoise
+psycopg2-binary
