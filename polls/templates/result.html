@@ -43,28 +43,11 @@
     </div>
   </nav>
   <div class="container-fluid">
-      <form action="upload" method="post" enctype="multipart/form-data">
-        <div class="row">
-        {% csrf_token %}
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Hình Cần Kiểm Tra</label>
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <span class="btn btn-default btn-file">
-                            {{ form.test }}
-                        </span>
-                    </span>
-                </div>
-                <img width="600px" height="400px" id='img-test'/>
-            </div>
-        </div>
-        <div class="col-md-6">
-          <button class="btn btn-primary" type="submit"> send</button>
-        </div>
-
-      </div>
-    </form>
+      {% if message == "1" %}
+      <h1>Match</h1>
+      {% else %}
+      <h1>Match</h1>
+      {% endif %}
   </div>
 
   <!-- Optional JavaScript -->

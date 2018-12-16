@@ -12,16 +12,14 @@ from polls.preprocessor import prepare
 # Create your views here.
 def index(request):
     form = FileUploadForm
-    js=static('image.js')
-    return render(request, 'index.html',{'form':form,'static':static})
+    return render(request, 'index.html',{'form':form})
 
 def upload_file(request):
     form = FileUploadForm(request.POST, request.FILES)
     if request.method == 'POST':
-        test = Image(test_img = request.FILES['test'])
-        traning = Image(traning_img = request.FILES['training'])
+        test = Image(test_img = request.FILES['test'])        
         test.save()
-        traning.save()
+
         print('OpenCV version {} '.format(cv2.__version__))
 
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,7 +47,7 @@ def upload_file(request):
                 test_labels.append([0, 1] if "genuine" in filename else [1, 0])
 
         message = sgd(training_data, training_labels, test_data, test_labels)
-    return HttpResponse(message)
+    return render(request, 'result.html',{'message':message})
 
 # Softmax Regression Model
 def regression(x):
