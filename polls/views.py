@@ -7,7 +7,9 @@ import os
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import cv2
 import tensorflow as tf
-from polls.preprocessor import prepare
+import polls.preprocessor as preprocessor
+import polls.network as network
+import numpy as np
 
 # Create your views here.
 def index(request):
@@ -17,9 +19,9 @@ def index(request):
 def upload_file(request):
     form = FileUploadForm(request.POST, request.FILES)
     if request.method == 'POST':
-        test = Image(test_img = request.FILES['test'])        
+        test = Image(test_img = request.FILES['test'])
         test.save()
-
+        main()
         print('OpenCV version {} '.format(cv2.__version__))
 
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,7 +35,7 @@ def upload_file(request):
         for filename in os.listdir(training_folder):
             img = cv2.imread(os.path.join(training_folder, filename), 0)
             if img is not None:
-                data = prepare(img)
+                data = preprocessor.prepare(img)
                 training_data.append(data)
                 training_labels.append([0, 1] if "genuine" in filename else [1, 0])
 
@@ -42,11 +44,12 @@ def upload_file(request):
         for filename in os.listdir(test_folder):
             img = cv2.imread(os.path.join(test_folder, filename), 0)
             if img is not None:
-                data = prepare(img)
+                data = preprocessor.prepare(img)
                 test_data.append(data)
                 test_labels.append([0, 1] if "genuine" in filename else [1, 0])
 
         message = sgd(training_data, training_labels, test_data, test_labels)
+        print(message)
     return render(request, 'result.html',{'message':message})
 
 # Softmax Regression Model
@@ -74,3 +77,35 @@ def sgd(training_data, training_labels, test_data, test_labels):
         sess.run(tf.global_variables_initializer())
         sess.run(train_step, feed_dict={x: training_data, y_: training_labels})
         return (sess.run(accuracy, feed_dict={x: test_data, y_: test_labels}))
+
+def main():
+    print('OpenCV version {} '.format(cv2.__version__))
+
+    current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    author = '021'
+    training_folder = os.path.join(current_dir, 'media/data/training/', author)
+    test_folder = os.path.join(current_dir, 'media/data/test/', author)
+
+    training_data = []
+    for filename in os.listdir(training_folder):
+        img = cv2.imread(os.path.join(training_folder, filename), 0)
+        if img is not None:
+            data = np.array(preprocessor.prepare(img))
+            data = np.reshape(data, (901, 1))
+            result = [[0], [1]] if "genuine" in filename else [[1], [0]]
+            result = np.array(result)
+            result = np.reshape(result, (2, 1))
+            training_data.append((data, result))
+
+    test_data = []
+    for filename in os.listdir(test_folder):
+        img = cv2.imread(os.path.join(test_folder, filename), 0)
+        if img is not None:
+            data = np.array(preprocessor.prepare(img))
+            data = np.reshape(data, (901, 1))
+            result = 1 if "genuine" in filename else 0
+            test_data.append((data, result))
+
+    net = network.NeuralNetwork([901, 500, 500, 2])
+    net.sgd(training_data, 10, 50, 0.01, test_data)
