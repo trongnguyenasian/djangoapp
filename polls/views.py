@@ -21,7 +21,7 @@ def upload_file(request):
     if request.method == 'POST':
         test = Image(test_img = request.FILES['test'])
         test.save()
-        main()
+        #main()
         print('OpenCV version {} '.format(cv2.__version__))
 
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
