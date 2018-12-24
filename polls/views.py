@@ -10,6 +10,7 @@ import tensorflow as tf
 import polls.preprocessor as preprocessor
 import polls.network as network
 import numpy as np
+import math
 
 # Create your views here.
 def index(request):
@@ -49,8 +50,12 @@ def upload_file(request):
                 test_labels.append([0, 1] if "genuine" in filename else [1, 0])
 
         message = sgd(training_data, training_labels, test_data, test_labels)
+        if math.isclose(message,1.0):
+            result = "Đúng"
+        else:
+        	result = "Sai"
         print(message)
-    return render(request, 'result.html',{'message':message})
+    return render(request, 'result.html',{'message':result})
 
 # Softmax Regression Model
 def regression(x):

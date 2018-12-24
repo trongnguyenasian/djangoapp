@@ -17,11 +17,7 @@
     </button>
   </nav>
   <div class="container-fluid">
-      {% if message == "1.0" %}
-      <h1>Đúng</h1>
-      {% else %}
-      <h1>Không đúng</h1>
-      {% endif %}
+      <h1>{{ message }}</h1>
       <a class="btn btn-primary" href="/">Quay lại</a>
   </div>
 
