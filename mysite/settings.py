@@ -25,8 +25,8 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-
+LOGIN_URL =  "/admin"
+LOGIN_REDIRECT_URL = '/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -34,7 +34,7 @@ STATICFILES_DIRS = (
 SECRET_KEY = 'a#%(xewxzdnzm89%=*9=rtr2p!74)m($xpqqf7u5(9l!zzzvb3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 

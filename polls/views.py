@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.conf import settings
 from polls.models import Image
 from polls.FileUploadForm import FileUploadForm
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 import os
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import cv2
@@ -13,6 +15,7 @@ import numpy as np
 import math
 
 # Create your views here.
+@login_required
 def index(request):
     form = FileUploadForm
     return render(request, 'index.html',{'form':form})
